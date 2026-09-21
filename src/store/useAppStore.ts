@@ -43,6 +43,7 @@ export const useAppStore = create<AppState>((set) => ({
     set({ loading: true, error: null, query: params ?? {} });
     try {
       const data = await api.getMicrobes(params);
+      if (token !== listToken) return;
       set({
         microbes: data.items,
         total: data.total,
@@ -50,6 +51,7 @@ export const useAppStore = create<AppState>((set) => ({
         loading: false,
       });
     } catch (err) {
+      if (token !== listToken) return;
       set({ error: (err as Error).message, loading: false });
     }
   },
