@@ -333,7 +333,7 @@ export function CategoryPage() {
                 ))}
               </div>
 
-              {!hasMore && (
+              {hasMore && (
                 <div className="text-center mt-12">
                   <button onClick={showMore} className="btn-primary">
                     显示更多标本

@@ -43,6 +43,8 @@ export const useAppStore = create<AppState>((set) => ({
     set({ loading: true, error: null, query: params ?? {} });
     try {
       const data = await api.getMicrobes(params);
+      // 快速翻页/切换条件时旧请求可能晚于新请求返回，只有最新一次请求允许写状态
+      if (token !== listToken) return;
       set({
         microbes: data.items,
         total: data.total,
@@ -50,6 +52,7 @@ export const useAppStore = create<AppState>((set) => ({
         loading: false,
       });
     } catch (err) {
+      if (token !== listToken) return;
       set({ error: (err as Error).message, loading: false });
     }
   },
